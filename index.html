@@ -10,47 +10,65 @@
 		<link rel="stylesheet" href="app/common/hc.css" />
 
 		<script type="text/javascript" src="lib/mui/0.7.0/js/mui.js"></script>
+		<script type="text/javascript" src="app/common/html2dom.js"></script>
 		<script type="text/javascript" src="app/common/hc.js"></script>
 	</head>
 
 	<body>
-		<h2>APP ENTRANCE</h2>
+		<header class="mui-bar mui-bar-nav" id="hcHeader">
+			<h1 class="mui-title">生活保健</h1>
+			<a class="mui-icon mui-icon-reload mui-pull-right" id="hcRefresh"></a>
+		</header>
+
 		<script>
 			(function($) {
 
-				// app entrance
-				$.init({
-					subpages: [{
-						url: 'app/index/list-main.html', // 子页面 HTML 地址，支持本地地址和网络地址
-						id: this.url, // 子页面唯一标识，用于 getWebviewById 方法
-						styles: {
-							top: '0',
-							bottom: '0',
-							bounce: 'vertical'
-						}
-					}]
-				});
-
+				var wv = null,
+					embed = null;
 				$.plusReady(function() {
-					//首页返回键处理
-					//处理逻辑：2 秒内，连续两次按返回键，则退出应用；
-					var first = null;
-					plus.key.addEventListener('backbutton', function() {
-						console.log('back clicked!');
-						//首次按键，提示‘再按一次退出应用’
-						if (!first) {
-							first = new Date().getTime();
-							$.toast('再按一次退出应用');
-							setTimeout(function() {
-								first = null;
-							}, 2000);
-						} else {
-							if (new Date().getTime() - first < 2000) {
-								plus.runtime.quit();
+					// 关闭程序启动界面
+					plus.navigator.closeSplashscreen();
+					// 加载列表页
+					$.init({
+						subpages: [{
+							url: 'app/shbj/list.html',
+							id: 'app/shbj/list.html',
+							styles: {
+								top: '48px',
+								bottom: '0',
+								bounce: 'vertical'
 							}
+						}]
+					});
+					//					wv = plus.webview.currentWebview();
+					//					embed = plus.webview.create('app/shbj/list.html', 'app/shbj/list.html', {
+					//						top: '48px',
+					//						bottom: '0',
+					//						bounce: 'vertical'
+					//					});
+					//					wv.append(embed);
+					// 新闻列表刷新
+					document.getElementById('hcRefresh').onclick = function() {
+						if (!embed) {
+							embed = plus.webview.getWebviewById('app/shbj/list.html');
 						}
-					}, false);
+						embed.evalJS("listRefresh()");
+					};
 				});
+				
+				/**
+				 * 列表加载完毕后，显示刷新按钮
+				 */
+				window.hcRefreshShow = function() {
+					document.getElementById('hcRefresh').style.display = 'block';
+				};
+
+				/**
+				 * 列表加载前，隐藏刷新按钮
+				 */
+				window.hcRefreshHide = function() {
+					document.getElementById('hcRefresh').style.display = 'none';
+				};
 
 			})(mui);
 		</script>
