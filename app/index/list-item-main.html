@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no" />
+		<title>健康频道</title>
+
+		<link rel="stylesheet" href="../../lib/mui/0.6.0/css/mui.css" />
+		<link rel="stylesheet" href="../common/hc.css" />
+
+		<script type="text/javascript" src="../../lib/mui/0.6.0/js/mui.js"></script>
+		<script type="text/javascript" src="../common/html2dom.js"></script>
+		<script type="text/javascript" src="../common/hc.js"></script>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav" id="hcHeader">
+			<a class="mui-icon mui-icon-left-nav mui-pull-left mui-action-back"></a>
+			<h1 class="mui-title"></h1>
+			<a class="mui-icon mui-icon-redo mui-pull-right" id="hcShare" href="#hcShareList"></a>
+		</header>
+		
+		<div style="margin-top: 70px; text-align: center; font-size: 12px; color: #000;">
+			内容加载中...
+		</div>
+
+		<script>
+			(function($) {
+
+				var shares = null // 分享服务容器对象
+				$.plusReady(function() {
+					// 获取当前 webview 对象
+					var wv = plus.webview.currentWebview();
+					// 设置页面标题
+					document.getElementById('hcHeader').getElementsByClassName('mui-title')[0].innerHTML = wv.title;
+					// 加载页面内容
+					$.init({
+						subpages: [{
+							url: wv.href,
+							id: wv.href,
+							styles: {
+								top: '48px',
+								bottom: '0'
+							}
+						}]
+					});
+					// 分享
+					getShareSerivces();
+					document.getElementById('hcShare').style.display = 'block';
+				});
+
+				/**
+				 * 获取本机分享服务
+				 */
+				function getShareSerivces() {
+					plus.share.getServices(function(s) {
+						shares = {};
+						for (var i in s) {
+							var t = s[i];
+							shares[t.id] = t;
+//							console.log(t.id);
+						}
+					}, function(e) {
+						plus.nativeUI.alert('获取分享服务列表失败：' + e.message, null, '错误提示', '关闭');
+					});
+				};
+
+				/**
+				 * 分享操作
+				 * @param {String} id: 分享服务标识
+				 */
+				function shareAction(id, ex) {
+					var s = null;
+					if (!id || !(s = shares[id])) {
+						plus.nativeUI.alert('无效的分享服务！', null, '错误提示', '关闭');
+						return;
+					}
+					if (s.authenticated) {
+						console.log('已授权！');
+						//						shareMessage(s, ex);
+					} else {
+						console.log('未授权！');
+						s.authorize(function() {
+							//							shareMessage(s, ex);
+						}, function(e) {
+							console.log('认证授权失败：' + e.code + " - " + e.message);
+						});
+					}
+				};
+
+			})(mui);
+		</script>
+	</body>
+
+</html>
