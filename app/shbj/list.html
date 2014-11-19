@@ -46,7 +46,7 @@
 				 */
 				$.ready(function() {
 					$('#hcList').on('tap', 'a', function(e) {
-						var href = this.href,
+						var href = this.getAttribute('href'),
 							title = this.childNodes[0].textContent;
 						$.openWindow({
 							url: 'list-item.html',
@@ -130,7 +130,7 @@
 							iInfo.textContent = listItems[i].getElementsByClassName('info')[0].textContent;
 							// 创建超链接
 							var iLink = document.createElement('a'),
-								iHref = listItems[i].getElementsByTagName('a')[0].href;
+								iHref = listItems[i].getElementsByTagName('a')[0].getAttribute('href');
 							iLink.setAttribute('href', domain + iHref);
 							// 将刷新后新的列表项添加到列表中
 							var hcList = document.getElementById('hcList'),
@@ -211,7 +211,7 @@
 							iInfo.textContent = listItems[i].getElementsByClassName('info')[0].textContent;
 							// 创建超链接
 							var iLink = document.createElement('a'),
-								iHref = listItems[i].getElementsByTagName('a')[0].href;
+								iHref = listItems[i].getElementsByTagName('a')[0].getAttribute('href');
 							iLink.setAttribute('href', domain + iHref);
 							// 将列表项添加到列表中
 							var iLi = document.createElement('li');

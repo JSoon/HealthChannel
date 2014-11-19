@@ -18,9 +18,9 @@
 		<header class="mui-bar mui-bar-nav" id="hcHeader">
 			<a class="mui-icon mui-icon-left-nav mui-pull-left mui-action-back"></a>
 			<h1 class="mui-title"></h1>
-			<a class="mui-icon mui-icon-redo mui-pull-right" id="hcShare" href="#hcShareList"></a>
+			<a class="mui-icon mui-icon-weibo mui-pull-right" id="hcShare"></a>
 		</header>
-		
+
 		<div style="margin-top: 70px; text-align: center; font-size: 12px; color: #000;">
 			内容加载中...
 		</div>
@@ -28,10 +28,11 @@
 		<script>
 			(function($) {
 
-				var shares = null // 分享服务容器对象
+				var wv = null,
+					shares = null; // 分享服务容器对象
 				$.plusReady(function() {
 					// 获取当前 webview 对象
-					var wv = plus.webview.currentWebview();
+					wv = plus.webview.currentWebview();
 					// 设置页面标题
 					document.getElementById('hcHeader').getElementsByClassName('mui-title')[0].innerHTML = wv.title;
 					// 加载页面内容
@@ -48,6 +49,9 @@
 					// 分享
 					getShareSerivces();
 					document.getElementById('hcShare').style.display = 'block';
+					document.getElementById('hcShare').onclick = function() {
+						shareAction('sinaweibo');
+					};
 				});
 
 				/**
@@ -59,10 +63,10 @@
 						for (var i in s) {
 							var t = s[i];
 							shares[t.id] = t;
-//							console.log(t.id);
+							//							console.log(t.id);
 						}
 					}, function(e) {
-						plus.nativeUI.alert('获取分享服务列表失败：' + e.message, null, '错误提示', '关闭');
+						$.toast('获取分享服务列表失败：' + e.message);
 					});
 				};
 
@@ -73,20 +77,45 @@
 				function shareAction(id, ex) {
 					var s = null;
 					if (!id || !(s = shares[id])) {
-						plus.nativeUI.alert('无效的分享服务！', null, '错误提示', '关闭');
+						$.toast('无效的分享服务！');
 						return;
 					}
 					if (s.authenticated) {
 						console.log('已授权！');
-						//						shareMessage(s, ex);
+						shareMessage(s, ex);
 					} else {
 						console.log('未授权！');
 						s.authorize(function() {
-							//							shareMessage(s, ex);
+							shareMessage(s, ex);
 						}, function(e) {
-							console.log('认证授权失败：' + e.code + " - " + e.message);
+							$.toast('认证授权失败: ' + e.code + " - " + e.message);
 						});
 					}
+				};
+
+				/**
+				 * 发送分享消息
+				 * @param {plus.share.ShareService} s
+				 */
+				function shareMessage(s, ex) {
+					var sContent = wv.title + ' ' + wv.href,
+						msg = {
+							content: sContent, // 获取分享内容
+							extra: {
+								scene: ex
+							}
+						};
+					// 获取分享图片
+					//					if (pic && pic.realUrl) {
+					//						msg.pictures = [pic.realUrl];
+					//					}
+					console.log(JSON.stringify(msg));
+					s.send(msg, function() {
+						$.toast('分享到 ' + s.description + ' 成功！');
+					}, function(e) {
+						$.toast('分享到 ' + s.description + ' 失败: ' + e.code + ' - ' + e.message);
+						console.log('分享到 ' + s.description + ' 失败: ' + e.code + ' - ' + e.message);
+					});
 				};
 
 			})(mui);
