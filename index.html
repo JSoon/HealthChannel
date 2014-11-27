@@ -7,6 +7,7 @@
 		<title>健康频道</title>
 
 		<link rel="stylesheet" href="lib/mui/0.7.0/css/mui.css" />
+		<link rel="stylesheet" href="lib/fontawesome/4.2.0/css/font-awesome.css" />
 		<link rel="stylesheet" href="app/common/hc.css" />
 
 		<script type="text/javascript" src="lib/mui/0.7.0/js/mui.js"></script>
@@ -15,60 +16,70 @@
 	</head>
 
 	<body>
-		<header class="mui-bar mui-bar-nav" id="hcHeader">
-			<h1 class="mui-title">生活保健</h1>
-			<a class="mui-icon mui-icon-reload mui-pull-right" id="hcRefresh"></a>
-		</header>
+		<nav class="mui-bar mui-bar-tab" id="hcFooter">
+			<a class="mui-tab-item mui-active" href="app/life/list.html">保健</a>
+			<a class="mui-tab-item" href="app/travel/list.html">旅行</a>
+			<a class="mui-tab-item" href="app/sex/list.html">两性</a>
+		</nav>
 
 		<script>
 			(function($) {
 
-				var wv = null,
-					embed = null;
+				var wv = null;
 				$.plusReady(function() {
 					// 关闭程序启动界面
 					plus.navigator.closeSplashscreen();
-					// 加载列表页
+					// 初始加载保健页面
 					$.init({
 						subpages: [{
-							url: 'app/shbj/list.html',
-							id: 'app/shbj/list.html',
+							url: 'app/life/list.html',
+							id: 'app/life/list.html',
 							styles: {
-								top: '48px',
-								bottom: '0',
+								top: '0',
+								bottom: '50px',
 								bounce: 'vertical'
 							}
 						}]
 					});
-					//					wv = plus.webview.currentWebview();
-					//					embed = plus.webview.create('app/shbj/list.html', 'app/shbj/list.html', {
-					//						top: '48px',
-					//						bottom: '0',
-					//						bounce: 'vertical'
-					//					});
-					//					wv.append(embed);
-					// 新闻列表刷新
-					document.getElementById('hcRefresh').onclick = function() {
-						if (!embed) {
-							embed = plus.webview.getWebviewById('app/shbj/list.html');
+					// 预加载旅行页面
+					$.preload({
+						url: 'app/travel/list.html',
+						id: 'app/travel/list.html',
+						styles: {
+							top: '0',
+							bottom: '50px',
+							bounce: 'vertical'
 						}
-						embed.evalJS("listRefresh()");
-					};
+					});
+					// 预加载两性页面
+					$.preload({
+						url: 'app/sex/list.html',
+						id: 'app/sex/list.html',
+						styles: {
+							top: '0',
+							bottom: '50px',
+							bounce: 'vertical'
+						}
+					});
+					// 导航选项卡切换
+					var tabs = document.getElementById('hcFooter').getElementsByTagName('a');
+					$('#hcFooter').on('tap', 'a', function(e) {
+						var id = this.getAttribute('href'); // webview id
+						wv = plus.webview.getWebviewById(id);
+						// 如果 webview 不可见，则显示它，同时隐藏其他的 webview 视窗
+						if (wv.isVisible() === false) {
+							for (var j = 0; j < tabs.length; j += 1) {
+								var _id = tabs[j].getAttribute('href'),
+									_wv = plus.webview.getWebviewById(_id);
+								_wv.hide();
+							}
+							wv.show('fade-in', 200, function() {
+								// ShowedCallback
+							});
+						}
+						e.preventDefault();
+					});
 				});
-				
-				/**
-				 * 列表加载完毕后，显示刷新按钮
-				 */
-				window.hcRefreshShow = function() {
-					document.getElementById('hcRefresh').style.display = 'block';
-				};
-
-				/**
-				 * 列表加载前，隐藏刷新按钮
-				 */
-				window.hcRefreshHide = function() {
-					document.getElementById('hcRefresh').style.display = 'none';
-				};
 
 			})(mui);
 		</script>

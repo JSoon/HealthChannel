@@ -7,6 +7,7 @@
 		<title>健康频道</title>
 
 		<link rel="stylesheet" href="../../lib/mui/0.6.0/css/mui.css" />
+		<link rel="stylesheet" href="../../lib/fontawesome/4.2.0/css/font-awesome.css" />
 		<link rel="stylesheet" href="../common/hc.css" />
 
 		<script type="text/javascript" src="../../lib/mui/0.6.0/js/mui.js"></script>
@@ -23,35 +24,46 @@
 
 		<div style="margin-top: 70px; text-align: center; font-size: 12px; color: #000;">
 			内容加载中...
+			<br />
+			<img src="../common/loading.gif" style="margin-top: 10px;" />
 		</div>
 
 		<script>
 			(function($) {
 
 				var wv = null,
+					ewv = null,
 					shares = null; // 分享服务容器对象
 				$.plusReady(function() {
 					// 获取当前 webview 对象
 					wv = plus.webview.currentWebview();
 					// 设置页面标题
 					document.getElementById('hcHeader').getElementsByClassName('mui-title')[0].innerHTML = wv.title;
-					// 加载页面内容
-					$.init({
-						subpages: [{
-							url: wv.href,
-							id: wv.href,
-							styles: {
-								top: '48px',
-								bottom: '0'
-							}
-						}]
+					// 加载页面内容（如果采用 init 方法来加载外部 url，有可能会出现阻塞问题）
+					//					$.init({
+					//						subpages: [{
+					//							url: wv.href,
+					//							id: wv.href,
+					//							styles: {
+					//								top: '48px',
+					//								bottom: '0'
+					//							}
+					//						}]
+					//					});
+					ewv = plus.webview.create(wv.href, wv.href, {
+						top: '48px',
+						bottom: '0'
 					});
+					// 页面内容加载完成后，再将其嵌入到 wv 中（防止出现空白的 ewv）
+					ewv.onloaded = function() {
+						wv.append(ewv);
+					};
 					// 分享
 					getShareSerivces();
-					document.getElementById('hcShare').style.display = 'block';
-					document.getElementById('hcShare').onclick = function() {
+					document.getElementById('hcShare').style.display = 'block'; // 页面加载完成后，显示分享按钮
+					document.getElementById('hcShare').addEventListener('tap', function(e) {
 						shareAction('sinaweibo');
-					};
+					});
 				});
 
 				/**

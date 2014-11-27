@@ -1,7 +1,6 @@
 /**
  * 加载框
  */
-
 #sjLoading {
 	position: fixed;
 	top: 0;
@@ -25,80 +24,71 @@
 	margin-top: 0;
 	font-size: 16px;
 }
-/**
- * 主体
- */
-/*#hcContent {
-	background-color: #fff;
-}*/
-/**
- * 列表
- */
 
-#hcRefresh {
+/**
+ * 公共
+ */
+html,
+body {
+	background: #fff;
+}
+#hcHeader {
+	top: -1px;
+	/*修复某些手机距离顶部有1px空隙的bug*/
+}
+#hcShare {
 	display: none;
 }
-.hc-title {
+
+/**
+ * 生活保健
+ */
+#hcLifeList .hc-title {
 	margin-bottom: 10px;
 }
-.hc-info {
+#hcLifeList .hc-info {
 	display: block;
 	font-size: 12px;
 	color: #bbb;
 }
+#hcLifeList .hc-info span {
+	margin-right: 5px;
+}
+
 /**
- * 文章
+ * 旅游中国
  */
-
-#hcShare {
-	display: none;
+#hcTravelList .mui-media-object {
+	max-width: none;
+	width: 90px;
+	height: 60px;
 }
-/*.hc-article-hd h2 {
-	margin: 0;
-	padding: 10px 10px 0;
-	line-height: 1.2;
-}
-.hc-article-hd .hc-article-info {
-	padding: 10px;
+#hcTravelList .hc-loc,
+#hcTravelList .hc-info {
 	font-size: 12px;
-	color: #bbb;
+	color: #999;
 }
-.hc-article-hd .hc-article-info span {
-	padding-left: 5px;
-	padding-right: 5px;
-	border-right: 1px solid #bbb;
+#hcTravelList .hc-info {
+	position: relative;
 }
-.hc-article-hd .hc-article-info span:first-child {
-	padding-left: 0;
+#hcTravelList .hc-loc span,
+#hcTravelList .hc-info span {
+	margin-right: 3px;
 }
-.hc-article-hd .hc-article-info span:last-child {
-	border: none;
+#hcTravelList .hc-loc .fa {
+	font-weight: bold;
+	font-size: 14px;
+	color: #DD524D;
 }
-
-.hc-article-bd {
+#hcTravelList .hc-info .fa {
+	font-size: 14px;
+	color: #EC971F;
 }
-.hc-article-bd p {
-	margin-bottom: 0;
-	padding: 10px;
-	color: #333;
-	font-size: 18px;
-	line-height: 1.6;
+#hcTravelList .hc-info .hc-like {
+	position: absolute;
+	top: 0;
+	right: 0;
 }
-.hc-article-bd p[align=center] {
-	padding: 0;
+#hcTravelList .hc-info .hc-like .fa {
+	color: #DD524D;
 }
-.hc-article-bd img {
-	max-width: 100%;
-}*/
-
-
-
-
-
-
-
-
-
-
-
-

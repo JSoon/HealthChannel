@@ -311,6 +311,16 @@ a:active {
   white-space: nowrap;
 }
 
+.mui-ellipsis-1 { /* Added by J.Soon */
+  display: -webkit-box;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: normal !important;
+
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+}
+
 .mui-ellipsis-2 {
   display: -webkit-box;
   overflow: hidden;
