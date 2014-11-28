@@ -6,44 +6,35 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no" />
 		<title>健康频道</title>
 
+		<link rel="stylesheet" href="../../lib/mui/0.6.0/css/mui.css" />
+		<link rel="stylesheet" href="../../lib/fontawesome/4.2.0/css/font-awesome.css" />
 		<link rel="stylesheet" href="../common/hc.css" />
 
 		<script type="text/javascript" src="../../lib/mui/0.6.0/js/mui.js"></script>
 		<script type="text/javascript" src="../common/html2dom.js"></script>
 		<script type="text/javascript" src="../common/hc.js"></script>
+
+		<style>
+			#hcSexContent {
+				width: 100%;
+				margin: 0;
+				padding: 0;
+				border: none;
+			}
+		</style>
 	</head>
 
 	<body>
-		<div style="margin-top: 22px; text-align: center; font-size: 12px; color: #000;" id="funnyLoading">
-			内容加载中...
-			<br />
-			<img src="../common/loading.gif" style="margin-top: 10px;" />
-		</div>
-
-		<div class="mui-content" id="hcContent">
-
-		</div>
+		<iframe id="hcSexContent"></iframe>
 
 		<script>
 			(function($) {
-
-				var wv = null;
+				
 				$.plusReady(function() {
-					// 获取当前 webview 对象
-					wv = plus.webview.currentWebview();
-					// 加载页面内容
-					$.get(wv.href, null, function(data) {
-						// 删除 funnyLoading 界面
-						document.getElementById('funnyLoading').outerHTML = ''; 
-						// 将字符串转化为HTMLDocument对象
-						var parser = new DOMParser(),
-							doc = parser.parseFromString(data, "text/html"),
-							i = 0;
-						// 消灭 taobao 广告中的 iframe 标签
-						var tAd = doc.getElementsByClassName('t_ad_items')[0];
-						tAd.outerHTML = '';
-						document.getElementById('hcContent').innerHTML = doc.getElementsByTagName('html')[0].innerHTML;
-					}, 'html');
+					var wv = plus.webview.currentWebview(),
+						vh = window.innerHeight;
+					document.getElementById('hcSexContent').style.height = vh + 'px';
+					document.getElementById('hcSexContent').setAttribute('src', wv.href);
 				});
 
 			})(mui);

@@ -56,6 +56,7 @@
 					});
 					// 页面内容加载完成后，再将其嵌入到 wv 中（防止出现空白的 ewv）
 					ewv.onloaded = function() {
+						//						ewv.evalJS('alert(1)');
 						wv.append(ewv);
 					};
 					// 分享

@@ -46,6 +46,17 @@
 					});
 					// 页面内容加载完成后，再将其嵌入到 wv 中（防止出现空白的 ewv）
 					ewv.onloaded = function() {
+						//						//创建一个遮罩层，阻止用户访问外链网页的超链接
+						//						var ewvJS = 'var hcMaskLayer = document.createElement("div");' +
+						//							'hcMaskLayer.style.position = "fixed";' +
+						//							'hcMaskLayer.style.top = 0;' +
+						//							'hcMaskLayer.style.left = 0;' +
+						//							'hcMaskLayer.style.zIndex = 9999;' +
+						//							'hcMaskLayer.style.width = "100%";' +
+						//							'hcMaskLayer.style.height = window.innerHeight + "px";' +
+						//							'hcMaskLayer.style.backgroundColor = "transparent";' +
+						//							'document.body.appendChild(hcMaskLayer);';
+						//						ewv.evalJS(ewvJS);
 						wv.append(ewv);
 					};
 					// 分享
