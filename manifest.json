@@ -1,7 +1,7 @@
 ﻿{
 	"@platforms": ["android"],
 	"id": "H5D90D9CB",/*应用的标识，创建应用时自动生成，勿手动修改*/
-	"name": "HealthChannel",/*应用名称，程序桌面图标名称*/
+	"name": "健康频道",/*应用名称，程序桌面图标名称*/
 	"version": {
 		"name": "1.0",/*应用版本名称*/
 		"code": ""
@@ -203,7 +203,7 @@
 					"sina": {
 						"appkey": "1759071176",
 						"appsecret": "82606e56decf2078c87265c5255aeb0a",
-						"redirect_uri": "http://www.pgyer.com/HealthChannel",
+						"redirect_uri": "http://www.pgyer.com/",
 						"description": "新浪微博分享"
 					}
 				},
