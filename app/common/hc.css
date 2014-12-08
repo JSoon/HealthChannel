@@ -19,11 +19,50 @@
 	font-weight: normal;
 	font-size: 12px;
 	background-color: #fff;
-	border-radius: 1px;
+	border-radius: 2px;
 }
 #sjLoading div .mui-icon {
 	margin-top: 0;
 	font-size: 16px;
+}
+/**
+ * 欢迎界面
+ */
+
+#hcWelcome {
+	z-index: 9999;
+	display: none;
+}
+#hcWelcome .mui-slider-indicator {
+	height: 24px;
+}
+#hcWelcome .mui-indicator {
+	width: 22px;
+	height: 24px;
+	border-radius: 0;
+	background: url(wel_inactive.png) 0 0 no-repeat transparent;
+	box-shadow: none;
+}
+#hcWelcome .mui-indicator.mui-active {
+	background: url(wel_active.png) 0 0 no-repeat transparent;
+}
+#hcStartUsing {
+	position: absolute;
+	left: 0;
+	bottom: 80px;
+	width: 100%;
+	height: 56px;
+	text-align: center;
+}
+#hcStartUsing a {
+	display: inline-block;
+	width: 166px;
+	height: 56px;
+	background: url(wel_btn.png) 0 0 no-repeat transparent;
+}
+#hcStartUsing a:active,
+#hcStartUsing a:focus {
+	opacity: 0.6;
 }
 /**
  * 公共
@@ -31,17 +70,30 @@
 
 html,
 body {
-	background: #f4f4f4;
+	background: #eee;
 }
 #hcHeader {
 	top: -1px;
 	/*修复某些手机距离顶部有1px空隙的bug*/
+	
+	background-color: rgba(33, 181, 82, 0.98);
+	border-bottom: 1px solid rgba(30, 163, 74, 0.98);
+	background-image: radial-gradient( ellipse at center -5px, #2fd474, #21b552);
+	box-shadow: 0 1px 6px rgba(0, 0, 0, 0.2);
+}
+#hcHeader .mui-title {
+	/*font-weight: bold;*/
+	
+	color: #fff;
+}
+#hcHeader .mui-icon {
+	color: #fff;
 }
 #hcShare {
 	display: none;
 }
 .mui-content {
-	background: #f4f4f4;
+	background: #eee;
 }
 .mui-table-view {
 	margin-top: 0 !important;
@@ -54,13 +106,21 @@ body {
 	padding: 15px;
 	background-color: #fff;
 	background-image: none;
-	box-shadow: 0 1px 5px rgba(0, 0, 0, .1);
+	box-shadow: 0 2px 2px rgba(0, 0, 0, .1);
+	border-radius: 2px;
 }
 .mui-table-view-cell:last-child {
 	margin-bottom: 0;
 }
 .mui-table-view-cell > a:not(.mui-btn) {
 	margin: -15px;
+}
+#hcFooter {
+	background-color: rgba(250, 250, 250, 0.98);
+	box-shadow: 0 0 1px rgba(0, 0, 0, .5);
+}
+#hcFooter .mui-tab-item.mui-active {
+	color: rgb(33, 181, 82);
 }
 /**
  * 生活保健
