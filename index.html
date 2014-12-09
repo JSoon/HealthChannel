@@ -128,11 +128,11 @@
 						var gallery = $('#hcWelcome'),
 							galleryImgHeight = 640,
 							hcWelcome = document.getElementById('hcWelcome'),
-							viewportHeight = plus.display.resolutionHeight;
+							viewportHeight = plus.display.resolutionHeight,
+							galleryImgs = document.getElementById('hcWelcome').getElementsByTagName('img');
 						// 图片高度自适应处理
 						if (galleryImgHeight > viewportHeight) {
-							var galleryImgs = document.getElementById('hcWelcome').getElementsByTagName('img'),
-								i = 0;
+							var i = 0;
 							for (i; i < galleryImgs.length; i += 1) {
 								galleryImgs[i].style.marginTop = -(galleryImgHeight - viewportHeight) / 4 + 'px';
 							}
@@ -156,14 +156,18 @@
 						bounce: 'vertical'
 					});
 					// 保健页面开始加载时，再关闭程序启动界面
-					plus.webview.getWebviewById('app/life/list.html').onloading = function() {
+					//					plus.webview.getWebviewById('app/life/list.html').onloading = function() {
+					//						console.log('onloading'); // not working in XIAOMI3
+					//						plus.navigator.closeSplashscreen();
+					//					};
+					plus.webview.getWebviewById('app/life/list.html').onloaded = function() {
 						plus.navigator.closeSplashscreen();
 					};
 					// 预加载旅行页面
 					$.preload({
 						url: 'app/travel/list.html',
 						id: 'app/travel/list.html',
-						styles: { 
+						styles: {
 							top: '0',
 							bottom: '50px',
 							bounce: 'vertical'
