@@ -28,6 +28,8 @@
 			<img src="../common/loading.gif" style="margin-top: 10px;" />
 		</div>
 
+		<iframe class="hcIframeBox" sandbox="allow-same-origin allow-top-navigation allow-scripts"></iframe>
+
 		<script>
 			(function($) {
 
@@ -40,25 +42,34 @@
 					// 设置页面标题
 					document.getElementById('hcHeader').getElementsByClassName('mui-title')[0].innerHTML = wv.title;
 					// 加载页面内容
-					ewv = plus.webview.create(wv.href, wv.href, {
-						top: '48px',
-						bottom: '0'
-					});
-					// 页面内容加载完成后，再将其嵌入到 wv 中（防止出现空白的 ewv）
-					ewv.onloaded = function() {
-						//						//创建一个遮罩层，阻止用户访问外链网页的超链接
-						//						var ewvJS = 'var hcMaskLayer = document.createElement("div");' +
-						//							'hcMaskLayer.style.position = "fixed";' +
-						//							'hcMaskLayer.style.top = 0;' +
-						//							'hcMaskLayer.style.left = 0;' +
-						//							'hcMaskLayer.style.zIndex = 9999;' +
-						//							'hcMaskLayer.style.width = "100%";' +
-						//							'hcMaskLayer.style.height = window.innerHeight + "px";' +
-						//							'hcMaskLayer.style.backgroundColor = "transparent";' +
-						//							'document.body.appendChild(hcMaskLayer);';
-						//						ewv.evalJS(ewvJS);
-						wv.append(ewv);
+					var vh = window.innerHeight,
+						contentBox = document.getElementsByClassName('hcIframeBox')[0];
+					contentBox.style.height = vh + 'px';
+					contentBox.setAttribute('src', wv.href);
+					// iframe 页面加载完毕后，隐藏 loading 提示信息
+					contentBox.onload = function() {
+						this.style.display = 'block';
 					};
+					//					// 加载页面内容
+					//					ewv = plus.webview.create(wv.href, wv.href, {
+					//						top: '48px',
+					//						bottom: '0'
+					//					});
+					//					// 页面内容加载完成后，再将其嵌入到 wv 中（防止出现空白的 ewv）
+					//					ewv.onloaded = function() {
+					//						//						//创建一个遮罩层，阻止用户访问外链网页的超链接
+					//						//						var ewvJS = 'var hcMaskLayer = document.createElement("div");' +
+					//						//							'hcMaskLayer.style.position = "fixed";' +
+					//						//							'hcMaskLayer.style.top = 0;' +
+					//						//							'hcMaskLayer.style.left = 0;' +
+					//						//							'hcMaskLayer.style.zIndex = 9999;' +
+					//						//							'hcMaskLayer.style.width = "100%";' +
+					//						//							'hcMaskLayer.style.height = window.innerHeight + "px";' +
+					//						//							'hcMaskLayer.style.backgroundColor = "transparent";' +
+					//						//							'document.body.appendChild(hcMaskLayer);';
+					//						//						ewv.evalJS(ewvJS);
+					//						wv.append(ewv);
+					//					};
 					// 分享
 					getShareSerivces();
 					document.getElementById('hcShare').style.display = 'block'; // 页面加载完成后，显示分享按钮

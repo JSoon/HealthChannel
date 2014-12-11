@@ -28,6 +28,8 @@
 			<img src="../common/loading.gif" style="margin-top: 10px;" />
 		</div>
 
+		<iframe class="hcIframeBox" sandbox="allow-same-origin allow-top-navigation"></iframe>
+
 		<script>
 			(function($) {
 
@@ -39,6 +41,15 @@
 					wv = plus.webview.currentWebview();
 					// 设置页面标题
 					document.getElementById('hcHeader').getElementsByClassName('mui-title')[0].innerHTML = wv.title;
+					// 加载页面内容
+					var vh = window.innerHeight,
+						contentBox = document.getElementsByClassName('hcIframeBox')[0];
+					contentBox.style.height = vh + 'px';
+					contentBox.setAttribute('src', wv.href);
+					// iframe 页面加载完毕后，隐藏 loading 提示信息
+					contentBox.onload = function() {
+						this.style.display = 'block';
+					};
 					//					// 加载页面内容
 					//					ewv = plus.webview.create(wv.href, wv.href, {
 					//						top: '48px',
@@ -48,23 +59,6 @@
 					//					ewv.onloaded = function() {
 					//						wv.append(ewv);
 					//					};
-					//					// 分享
-					//					getShareSerivces();
-					//					document.getElementById('hcShare').style.display = 'block'; // 页面加载完成后，显示分享按钮
-					//					document.getElementById('hcShare').addEventListener('tap', function(e) {
-					//						shareAction('sinaweibo');
-					//					});
-					// 加载页面内容
-					ewv = plus.webview.create('list-item-detail.html', 'list-item-detail.html', {
-						top: '48px',
-						bottom: '0'
-					}, {
-						href: wv.href
-					});
-					// 页面内容加载完成后，再将其嵌入到 wv 中（防止出现空白的 ewv）
-					ewv.onloaded = function() {
-						wv.append(ewv);
-					};
 					// 分享
 					getShareSerivces();
 					document.getElementById('hcShare').style.display = 'block'; // 页面加载完成后，显示分享按钮

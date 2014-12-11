@@ -47,29 +47,31 @@
 		<script>
 			(function($) {
 
+				var lwv = null;
 				// 给列表项绑定页面跳转事件
 				$('#hcTravelList').on('tap', 'a', function(e) {
 					var href = this.getAttribute('href'),
 						title = this.getElementsByClassName('mui-ellipsis-1')[0].textContent,
 						imgSrc = this.getElementsByTagName('img')[0].getAttribute('src');
-					$.openWindow({
-						url: 'list-item.html',
-						id: 'list-item.html',
-						extras: { //自定义扩展参数，可以用来处理页面间传值
-							title: title, // 需要加载的页面的标题
-							href: href, // 需要加载的页面地址
-							src: imgSrc // 分享图片的地址
-						},
-						show: {
-							autoShow: true, // 页面 loaded 事件发生后自动显示，默认为true
-							aniShow: 'fade-in', // 页面显示动画，默认为'slide-in-right'；
-							duration: 100 // 页面动画持续时间，Android平台默认100毫秒，iOS平台默认200毫秒；
-						},
-						waiting: {
-							autoShow: false, // 自动显示等待框，默认为true
-							title: '加载中' // 等待对话框上显示的提示内容
-						}
+					// 打开详情页面
+					lwv = plus.webview.create('list-item.html', 'list-item.html', {
+						top: '0',
+						bottom: '0'
+					}, { //自定义扩展参数，可以用来处理页面间传值
+						title: title, // 需要加载的页面的标题
+						href: href, // 需要加载的页面地址
+						src: imgSrc // 分享图片的地址
 					});
+					lwv.onloading = function() {
+						hc.loadingShow(' ');
+					};
+					lwv.onloaded = function() {
+						setTimeout(function() {
+							lwv.show('fade-in', 200, function() {
+								hc.loadingHide();
+							});
+						}, 500);
+					};
 					e.preventDefault();
 				});
 

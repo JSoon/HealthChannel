@@ -1,4 +1,44 @@
 /**
+ * CSS3 特效
+ */
+
+.animated {
+	-webkit-animation-duration: 0.5s;
+	animation-duration: 0.5s;
+	-webkit-animation-fill-mode: both;
+	animation-fill-mode: both;
+}
+@-webkit-keyframes zoomOut {
+	0% {
+		opacity: 1;
+	}
+	50% {
+		opacity: 0;
+		-webkit-transform: scale3d(.3, .3, .3);
+		transform: scale3d(.3, .3, .3);
+	}
+	100% {
+		opacity: 0;
+	}
+}
+@keyframes zoomOut {
+	0% {
+		opacity: 1;
+	}
+	50% {
+		opacity: 0;
+		-webkit-transform: scale3d(.3, .3, .3);
+		transform: scale3d(.3, .3, .3);
+	}
+	100% {
+		opacity: 0;
+	}
+}
+.zoomOut {
+	-webkit-animation-name: zoomOut;
+	animation-name: zoomOut;
+}
+/**
  * 加载框
  */
 
@@ -37,10 +77,12 @@
 	height: 24px;
 }
 #hcWelcome .mui-indicator {
-	width: 22px;
+	width: 24px;
 	height: 24px;
+	margin: 1px 2px;
 	border-radius: 0;
 	background: url(wel_inactive.png) 0 0 no-repeat transparent;
+	background-size: 24px 24px;
 	box-shadow: none;
 }
 #hcWelcome .mui-indicator.mui-active {
@@ -56,13 +98,21 @@
 }
 #hcStartUsing a {
 	display: inline-block;
-	width: 166px;
-	height: 56px;
-	background: url(wel_btn.png) 0 0 no-repeat transparent;
+	width: 164px;
+	height: 54px;
+	line-height: 51px;
+	text-align: center;
+	font-size: 18px;
+	color: #fff;
+	text-decoration: none;
+	background: transparent;
+	border: 2px solid #fff;
+	border-radius: 2px;
+	opacity: 0.8;
 }
 #hcStartUsing a:active,
 #hcStartUsing a:focus {
-	opacity: 0.6;
+	opacity: 0.4;
 }
 /**
  * 公共
@@ -121,6 +171,16 @@ body {
 }
 #hcFooter .mui-tab-item.mui-active {
 	color: rgb(33, 181, 82);
+}
+iframe.hcIframeBox {
+	position: absolute;
+	top: 43px;
+	left: 0;
+	display: none;
+	width: 100%;
+	margin: 0;
+	padding: 0;
+	border: none;
 }
 /**
  * 生活保健

@@ -46,7 +46,7 @@
 	function checkUpdate() {
 		// 判断升级检测是否过期
 		var lastcheck = plus.storage.getItem(keyUpdate);
-		console.log(lastcheck);
+		//		console.log(lastcheck);
 		if (lastcheck) {
 			var dc = parseInt(lastcheck); // 最后一次检测时的日期
 			var dn = (new Date()).getTime(); // 当前的日期
@@ -65,7 +65,7 @@
 				reader.onloadend = function(e) {
 					fileEntry.remove();
 					var data = null;
-					console.log(e.target.result);
+					//					console.log(e.target.result);
 					try {
 						data = JSON.parse(e.target.result);
 					} catch (e) {
@@ -91,12 +91,12 @@
 	function checkUpdateData(data) {
 		var curVer = plus.runtime.version, // 当前 app 的版本号
 			inf = data[plus.os.name]; // 当前 app 的系统类型（Android/iOS）
-		console.log('curVer: ' + curVer);
+		//		console.log('curVer: ' + curVer);
 		if (inf) {
 			var srvVer = inf.version, // 服务器上最新的 app 版本号
 				needUpdate = compareVersion(curVer, srvVer); // 是否需要升级标识
-			console.log('srvVer: ' + srvVer);
-			console.log('needUpdate: ' + needUpdate);
+			//			console.log('srvVer: ' + srvVer);
+			//			console.log('needUpdate: ' + needUpdate);
 			// 判断是否需要升级
 			if (needUpdate) {
 				// 提示用户是否升级
@@ -125,8 +125,8 @@
 		var b = false,
 			ova = ov.split(".", 4), // [1, 0]
 			nva = nv.split(".", 4); // [1, 1]
-		console.log(ova);
-		console.log(nva);
+		//		console.log(ova);
+		//		console.log(nva);
 		for (var i = 0; i < ova.length && i < nva.length; i++) {
 			var so = ova[i],
 				no = parseInt(so),

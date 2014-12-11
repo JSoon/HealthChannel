@@ -33,7 +33,7 @@
 			</a>
 		</nav>
 
-		<div class="mui-slider" id="hcWelcome">
+		<div class="mui-slider animated" id="hcWelcome">
 			<div class="mui-slider-group">
 				<div class="mui-slider-item">
 					<img src="app/common/wel_1.jpg" />
@@ -43,7 +43,7 @@
 				</div>
 				<div class="mui-slider-item">
 					<div id="hcStartUsing">
-						<a></a>
+						<a>开始体验</a>
 					</div>
 					<img src="app/common/wel_3.jpg" />
 				</div>
@@ -69,15 +69,19 @@
 							fileReader.readAsText(file, 'utf-8');
 							fileReader.onloadend = function(e) {
 								//								console.log('firstblood: ' + e.target.result);
-								// 如果是首次打开 app，则显示轮滑图片，如果不是，则清除轮滑图片，然后显示保健列表页
-								if (e.target.result === 'true') {
-									showWelcomeSlider();
-								} else {
-									var hcWelcome = document.getElementById('hcWelcome');
-									hcWelcome.parentNode.removeChild(hcWelcome);
-									plus.webview.show('app/life/list.html', 'fade-in', 400);
-								}
-							}
+								// 如果是首次打开 app，则显示轮滑图片，如果不是，则移除轮滑图片，然后显示保健列表页
+								//								if (e.target.result === 'true') {
+								//									showWelcomeSlider();
+								//								} else {
+								//									var hcWelcome = document.getElementById('hcWelcome');
+								//									hcWelcome.parentNode.removeChild(hcWelcome);
+								//									plus.webview.getWebviewById('app/life/list.html').onloaded = function() {
+								//										plus.navigator.closeSplashscreen();
+								//										plus.webview.show('app/life/list.html', 'fade-in', 400);
+								//									};
+								//								}
+								showWelcomeSlider();
+							};
 						});
 					}, function(e) { // 如果文件不存在，则创建它
 						// 读取 PRIVATE_DOC 文件夹
@@ -136,16 +140,34 @@
 							for (i; i < galleryImgs.length; i += 1) {
 								galleryImgs[i].style.marginTop = -(galleryImgHeight - viewportHeight) / 4 + 'px';
 							}
+							// “开始体验”按钮定位
+							document.getElementById('hcStartUsing').style.bottom = ((galleryImgHeight - viewportHeight) / 4 + 50) + 'px';
 						}
 						gallery.slider();
 						// 设置 slider 高度为屏幕高度，然后显示它
 						hcWelcome.style.height = viewportHeight + 'px';
 						hcWelcome.style.display = 'block';
+						// slider 显示后再关闭启动界面，防止短暂白屏（实际上启动界面关闭后还是会有短暂的白屏，don't know why）
+						plus.navigator.closeSplashscreen();
 						// 点击“开始体验”按钮后，移除 hcWelcome 节点，然后显示保健列表页
 						var startUsing = document.getElementById('hcStartUsing').firstElementChild;
 						startUsing.addEventListener('touchend', function() {
-							hcWelcome.parentNode.removeChild(hcWelcome);
-							plus.webview.show('app/life/list.html', 'fade-in', 400);
+							hcWelcome.classList.add('zoomOut'); // 默认耗时 500ms
+							setTimeout(function() {
+								plus.webview.show('app/life/list.html', 'fade-in', 400);
+								hcWelcome.parentNode.removeChild(hcWelcome);
+							}, 500);
+
+							//							// 给轮滑图片一个渐隐的效果
+							//							var opa = 100;
+							//							for (var i = 0; i < 100; i += 1) {
+							//								opa -= 1;
+							//								hcWelcome.style.opacity = (opa / 100);
+							//								if (opa === 0) {
+							//									hcWelcome.parentNode.removeChild(hcWelcome);
+							//									plus.webview.show('app/life/list.html', 'fade-in', 400);
+							//								}
+							//							}
 						});
 					};
 
@@ -160,9 +182,9 @@
 					//						console.log('onloading'); // not working in XIAOMI3
 					//						plus.navigator.closeSplashscreen();
 					//					};
-					plus.webview.getWebviewById('app/life/list.html').onloaded = function() {
-						plus.navigator.closeSplashscreen();
-					};
+					//					plus.webview.getWebviewById('app/life/list.html').onloaded = function() {
+					//						plus.navigator.closeSplashscreen();
+					//					};
 					// 预加载旅行页面
 					$.preload({
 						url: 'app/travel/list.html',
@@ -193,11 +215,11 @@
 							for (var j = 0; j < tabs.length; j += 1) {
 								var _id = tabs[j].getAttribute('href'),
 									_wv = plus.webview.getWebviewById(_id);
-								_wv.hide();
+								if (_wv.id !== wv.id) {
+									_wv.hide();
+								}
 							}
-							wv.show('fade-in', 200, function() {
-								// ShowedCallback
-							});
+							wv.show('fade-in', 200);
 						}
 						e.preventDefault();
 					});

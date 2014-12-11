@@ -35,15 +35,14 @@
 					ewv = null,
 					shares = null; // 分享服务容器对象
 				$.plusReady(function() {
-					// 获取当前 webview 对象
-					wv = plus.webview.currentWebview();
+					wv = plus.webview.currentWebview(); // 获取当前 webview 对象
 					// 设置页面标题
 					document.getElementById('hcHeader').getElementsByClassName('mui-title')[0].innerHTML = wv.title;
 					// 加载页面内容（如果采用 init 方法来加载外部 url，有可能会出现阻塞问题）
 					//					$.init({
 					//						subpages: [{
-					//							url: wv.href,
-					//							id: wv.href,
+					//							url: href,
+					//							id: href,
 					//							styles: {
 					//								top: '48px',
 					//								bottom: '0'
@@ -51,7 +50,7 @@
 					//						}]
 					//					});
 					ewv = plus.webview.create(wv.href, wv.href, {
-						top: '48px',
+						top: '46px',
 						bottom: '0'
 					});
 					// 页面内容加载完成后，再将其嵌入到 wv 中（防止出现空白的 ewv）
@@ -65,71 +64,71 @@
 					document.getElementById('hcShare').addEventListener('tap', function(e) {
 						shareAction('sinaweibo');
 					});
-				});
 
-				/**
-				 * 获取本机分享服务
-				 */
-				function getShareSerivces() {
-					plus.share.getServices(function(s) {
-						shares = {};
-						for (var i in s) {
-							var t = s[i];
-							shares[t.id] = t;
-							//							console.log(t.id);
-						}
-					}, function(e) {
-						$.toast('获取分享服务列表失败：' + e.message);
-					});
-				};
-
-				/**
-				 * 分享操作
-				 * @param {String} id: 分享服务标识
-				 */
-				function shareAction(id, ex) {
-					var s = null;
-					if (!id || !(s = shares[id])) {
-						$.toast('无效的分享服务！');
-						return;
-					}
-					if (s.authenticated) {
-						console.log('已授权！');
-						shareMessage(s, ex);
-					} else {
-						console.log('未授权！');
-						s.authorize(function() {
-							shareMessage(s, ex);
-						}, function(e) {
-							$.toast('认证授权失败: ' + e.code + " - " + e.message);
-						});
-					}
-				};
-
-				/**
-				 * 发送分享消息
-				 * @param {plus.share.ShareService} s
-				 */
-				function shareMessage(s, ex) {
-					var sContent = wv.title + ' ' + wv.href,
-						msg = {
-							content: sContent, // 获取分享内容
-							extra: {
-								scene: ex
+					/**
+					 * 获取本机分享服务
+					 */
+					function getShareSerivces() {
+						plus.share.getServices(function(s) {
+							shares = {};
+							for (var i in s) {
+								var t = s[i];
+								shares[t.id] = t;
+								//							console.log(t.id);
 							}
-						};
-					// 获取分享图片
-					//					if (pic && pic.realUrl) {
-					//						msg.pictures = [pic.realUrl];
-					//					}
-					console.log(JSON.stringify(msg));
-					s.send(msg, function() {
-						$.toast('分享到 ' + s.description + ' 成功！');
-					}, function(e) {
-						$.toast('分享到 ' + s.description + ' 失败: ' + e.code + ' - ' + e.message);
-						console.log('分享到 ' + s.description + ' 失败: ' + e.code + ' - ' + e.message);
-					});
-				};
+						}, function(e) {
+							$.toast('获取分享服务列表失败：' + e.message);
+						});
+					};
+
+					/**
+					 * 分享操作
+					 * @param {String} id: 分享服务标识
+					 */
+					function shareAction(id, ex) {
+						var s = null;
+						if (!id || !(s = shares[id])) {
+							$.toast('无效的分享服务！');
+							return;
+						}
+						if (s.authenticated) {
+							console.log('已授权！');
+							shareMessage(s, ex);
+						} else {
+							console.log('未授权！');
+							s.authorize(function() {
+								shareMessage(s, ex);
+							}, function(e) {
+								$.toast('认证授权失败: ' + e.code + " - " + e.message);
+							});
+						}
+					};
+
+					/**
+					 * 发送分享消息
+					 * @param {plus.share.ShareService} s
+					 */
+					function shareMessage(s, ex) {
+						var sContent = wv.title + ' ' + wv.href,
+							msg = {
+								content: sContent, // 获取分享内容
+								extra: {
+									scene: ex
+								}
+							};
+						// 获取分享图片
+						//					if (pic && pic.realUrl) {
+						//						msg.pictures = [pic.realUrl];
+						//					}
+						console.log(JSON.stringify(msg));
+						s.send(msg, function() {
+							$.toast('分享到 ' + s.description + ' 成功！');
+						}, function(e) {
+							$.toast('分享到 ' + s.description + ' 失败: ' + e.code + ' - ' + e.message);
+							console.log('分享到 ' + s.description + ' 失败: ' + e.code + ' - ' + e.message);
+						});
+					};
+				});
 
 			})(mui);
 		</script>
