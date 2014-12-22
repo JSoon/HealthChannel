@@ -70,17 +70,16 @@
 							fileReader.onloadend = function(e) {
 								//								console.log('firstblood: ' + e.target.result);
 								// 如果是首次打开 app，则显示轮滑图片，如果不是，则移除轮滑图片，然后显示保健列表页
-								//								if (e.target.result === 'true') {
-								//									showWelcomeSlider();
-								//								} else {
-								//									var hcWelcome = document.getElementById('hcWelcome');
-								//									hcWelcome.parentNode.removeChild(hcWelcome);
-								//									plus.webview.getWebviewById('app/life/list.html').onloaded = function() {
-								//										plus.navigator.closeSplashscreen();
-								//										plus.webview.show('app/life/list.html', 'fade-in', 400);
-								//									};
-								//								}
-								showWelcomeSlider();
+								if (e.target.result === 'true') {
+									showWelcomeSlider();
+								} else {
+									var hcWelcome = document.getElementById('hcWelcome');
+									hcWelcome.parentNode.removeChild(hcWelcome);
+									plus.webview.getWebviewById('app/life/list.html').onloaded = function() {
+										plus.navigator.closeSplashscreen();
+										plus.webview.show('app/life/list.html', 'fade-in', 400);
+									};
+								}
 							};
 						});
 					}, function(e) { // 如果文件不存在，则创建它
